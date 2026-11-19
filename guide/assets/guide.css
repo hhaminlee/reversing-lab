@@ -1,0 +1,205 @@
+/* 글꼴과 라이브러리는 모두 저장소 안의 파일을 씀 (인터넷 없이 동작함) */
+@font-face {
+  font-family: "Pretendard Variable";
+  src: url("../fonts/pretendard/PretendardVariable.woff2") format("woff2-variations");
+  font-weight: 45 920; font-style: normal; font-display: swap;
+}
+/* 레이아웃: 왼쪽 고정 목차 + 오른쪽 본문(약 68자 폭), 모바일은 목차가 위로 올라감 */
+:root {
+  --bg: #F3F5F4; --surface: #FFFFFF; --fg: #172026; --muted: #56646B; --line: #D6DEDD;
+  --accent: #0F6E73; --accent-soft: #DCEEEE; --pad: #A86200; --pad-soft: #FCEBD0;
+  --ok: #2B7A31; --ok-soft: #E1F1E2; --bad: #B3261E; --bad-soft: #FBE4E2; --code-bg: #ECF1F0; --hl: #FFF2B8;
+  --f-body: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  --f-mono: "D2Coding", ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #101618; --surface: #172023; --fg: #E2EAEA; --muted: #95A4A7; --line: #2A3639;
+  --accent: #52C4BF; --accent-soft: #173A3B; --pad: #F0A83A; --pad-soft: #3A2B12;
+  --ok: #72C276; --ok-soft: #183019; --bad: #F2786D; --bad-soft: #3A1A18; --code-bg: #0C1214; --hl: #3D3612; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #101618; --surface: #172023; --fg: #E2EAEA; --muted: #95A4A7; --line: #2A3639;
+  --accent: #52C4BF; --accent-soft: #173A3B; --pad: #F0A83A; --pad-soft: #3A2B12;
+  --ok: #72C276; --ok-soft: #183019; --bad: #F2786D; --bad-soft: #3A1A18; --code-bg: #0C1214; --hl: #3D3612; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 16px; line-height: 1.75; }
+.wrap { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 48px; max-width: 1080px; margin: 0 auto;
+  padding-block: 40px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; font-size: 14px; }
+nav.toc .brand { font-weight: 700; font-size: 15px; margin-bottom: 4px }
+nav.toc .sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; line-height: 1.5 }
+nav.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px }
+nav.toc a { display: flex; gap: 10px; align-items: baseline; color: var(--fg); text-decoration: none; padding: 5px 8px; border-radius: 6px; line-height: 1.4 }
+nav.toc a:hover, nav.toc a:focus-visible { background: var(--accent-soft) }
+nav.toc .n { font-family: var(--f-mono); font-size: 12px; color: var(--muted); min-width: 18px }
+nav.toc a.done .n { color: var(--ok) }
+nav.toc a.done .n::before { content: "✓"; }
+nav.toc a.done .n span { display: none }
+.progress { margin-top: 16px; font-size: 13px; color: var(--muted) }
+.bar { height: 4px; background: var(--line); border-radius: 2px; margin-top: 6px; overflow: hidden }
+.bar i { display: block; height: 100%; background: var(--ok); width: 0; transition: width .3s }
+
+main { min-width: 0; max-width: 720px }
+header.intro h1 { font-size: 34px; line-height: 1.25; margin: 0 0 12px; text-wrap: balance; letter-spacing: -0.01em }
+header.intro p { color: var(--muted); margin: 0 0 8px }
+.howto { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 8px }
+.howto span { font-size: 13px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface) }
+
+section.ch { border-top: 1px solid var(--line); padding-top: 40px; margin-top: 48px; scroll-margin-top: 16px }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; color: var(--accent); text-transform: uppercase }
+section.ch h2 { font-size: 26px; line-height: 1.3; margin: 4px 0 8px; text-wrap: balance }
+.oneline { font-size: 17px; font-weight: 500; margin: 0 0 24px; color: var(--fg) }
+h3 { font-size: 15px; margin: 32px 0 8px; color: var(--muted); font-weight: 700; letter-spacing: .02em }
+p { margin: 0 0 14px }
+.analogy { background: var(--accent-soft); border-radius: 10px; padding: 16px 18px; margin: 0 0 16px }
+.analogy b { color: var(--accent) }
+code, .mono { font-family: var(--f-mono); font-size: .9em }
+p code, li code, td code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px }
+pre { background: var(--code-bg); border-radius: 10px; padding: 14px 16px; overflow-x: auto; font-family: var(--f-mono); font-size: 13px; line-height: 1.65; margin: 0 0 16px }
+pre .hl { background: var(--hl); display: inline-block; min-width: 100%; margin: 0 -16px; padding: 0 16px }
+pre .c { color: var(--muted) }
+.tbl { overflow-x: auto; margin: 0 0 16px }
+table { border-collapse: collapse; width: 100%; font-size: 14px }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top }
+th { color: var(--muted); font-weight: 500; font-size: 13px }
+ul, ol.steps { padding-left: 22px; margin: 0 0 14px }
+li { margin-bottom: 4px }
+
+/* 직접 해보기 상자 */
+.lab { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin: 8px 0 16px }
+.lab .lab-t { font-weight: 700; font-size: 14px; margin-bottom: 10px; display: flex; gap: 8px; align-items: center }
+.lab .lab-t::before { content: "▶"; color: var(--accent); font-size: 11px }
+.lab label { display: block; font-size: 13px; color: var(--muted); margin: 10px 0 4px }
+.lab input[type=text], .lab textarea { width: 100%; font-family: var(--f-mono); font-size: 14px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--fg) }
+.lab input:focus-visible, .lab textarea:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px }
+button { font-family: var(--f-body); font-size: 14px; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer }
+button:hover { border-color: var(--accent) }
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--surface) }
+.out { margin-top: 12px; font-size: 14px }
+.note { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.6 }
+.err { color: var(--bad) }
+
+/* 바이트 칸 */
+.bytes { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px }
+.byte { display: grid; text-align: center; min-width: 42px; border: 1px solid var(--line); border-radius: 6px; padding: 4px 4px 3px; background: var(--bg); font-family: var(--f-mono); line-height: 1.3 }
+.byte .h { font-size: 14px; font-weight: 600 }
+.byte .d { font-size: 11px; color: var(--muted) }
+.byte .ch { font-size: 12px; color: var(--accent); min-height: 16px }
+.byte.pad { background: var(--pad-soft); border-color: var(--pad) }
+.byte.pad .ch { color: var(--pad) }
+.byte.junk .ch { color: var(--muted) }
+.block { border: 1px dashed var(--muted); border-radius: 8px; padding: 8px; margin-top: 8px }
+.block .bl { font-size: 12px; color: var(--muted); margin-bottom: 2px }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--muted); margin-top: 8px }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 5px; border: 1px solid var(--line); background: var(--bg) }
+.legend i.p { background: var(--pad-soft); border-color: var(--pad) }
+
+/* 흐름도 */
+.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0 16px; font-size: 14px }
+.flow .box { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 8px 12px; line-height: 1.4 }
+.flow .box small { display: block; color: var(--muted); font-size: 12px }
+.flow .arr { color: var(--muted); font-family: var(--f-mono) }
+.flow.back .arr { color: var(--accent) }
+
+/* 확인 문제 */
+.quiz { border-left: 3px solid var(--accent); padding: 4px 0 4px 16px; margin: 20px 0 8px }
+.quiz .q { font-weight: 500; margin-bottom: 8px }
+.quiz .opts { display: grid; gap: 6px }
+.quiz .opts button { text-align: left; line-height: 1.5 }
+.quiz .opts button.right { background: var(--ok-soft); border-color: var(--ok) }
+.quiz .opts button.wrong { background: var(--bad-soft); border-color: var(--bad) }
+.quiz .why { margin-top: 10px; font-size: 14px }
+
+/* 비트 스위치 */
+.bits { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; margin-top: 8px }
+.bit { display: grid; text-align: center; gap: 2px; font-size: 11px; color: var(--muted) }
+.bit button { font-family: var(--f-mono); font-size: 16px; font-weight: 600; padding: 8px 0 }
+.bit button[aria-pressed=true] { background: var(--accent); color: var(--surface); border-color: var(--accent) }
+.bit.target button { box-shadow: 0 0 0 2px var(--pad) }
+
+.done-row { margin-top: 28px; display: flex; align-items: center; gap: 10px; font-size: 14px }
+.done-row input { width: 18px; height: 18px; accent-color: var(--ok) }
+
+/* 출처 영역 */
+footer.credits { border-top: 1px solid var(--line); margin-top: 64px; padding-top: 28px; font-size: 14px; color: var(--muted); line-height: 1.7 }
+footer.credits h2 { font-size: 15px; color: var(--fg); margin: 0 0 14px }
+footer.credits dl { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px 20px; margin: 0 }
+footer.credits dt { font-weight: 700; color: var(--fg) }
+footer.credits dd { margin: 0 }
+footer.credits a { color: var(--accent) }
+@media (max-width: 560px) { footer.credits dl { grid-template-columns: minmax(0, 1fr); gap: 2px } footer.credits dd { margin-bottom: 12px } }
+
+@media (max-width: 860px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-block: 24px 64px }
+  nav.toc { position: static; border: 1px solid var(--line); border-radius: 12px; padding: 14px; background: var(--surface) }
+  nav.toc ol { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) }
+  header.intro h1 { font-size: 28px }
+  .byte { min-width: 38px }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important } }
+html { scroll-behavior: smooth }
+body { margin: 0 }
+[hidden] { display: none !important }
+
+/* ---------- 2부에서 추가한 요소 ---------- */
+/* 1부·2부 이동 링크 */
+.parts { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px }
+.parts a { font-size: 12px; padding: 3px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); text-decoration: none }
+.parts a[aria-current="page"] { border-color: var(--accent); color: var(--accent); font-weight: 700 }
+.next-part { display: block; margin-top: 20px; padding: 16px 18px; border: 1px solid var(--accent); border-radius: 12px; color: var(--fg); text-decoration: none; background: var(--accent-soft) }
+.next-part b { color: var(--accent) }
+
+/* 먼저 생각해 보고 펼치는 정답 */
+details.answer { margin: 8px 0 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface) }
+details.answer summary { cursor: pointer; padding: 10px 14px; font-size: 14px; font-weight: 500; color: var(--accent) }
+details.answer > div { padding: 0 14px 12px }
+.think { border-left: 3px solid var(--pad); padding: 2px 0 2px 14px; margin: 12px 0 8px; font-weight: 500 }
+
+/* 어셈블리 목록: 주소 / 명령어 / 설명 */
+.asm { background: var(--code-bg); border-radius: 10px; padding: 10px 0; overflow-x: auto; margin: 0 0 16px; font-family: var(--f-mono); font-size: 13px; line-height: 1.7 }
+.asm .ln { display: grid; grid-template-columns: 52px minmax(230px, max-content) minmax(220px, 1fr); gap: 14px; padding: 0 16px; white-space: pre }
+.asm .ln .ad { color: var(--muted) }
+.asm .ln .cm { color: var(--muted); font-family: var(--f-body); white-space: normal }
+.asm .ln.hl { background: var(--hl) }
+.asm .ln.cur { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent) }
+.asm .ln.lbl .ins { color: var(--accent); font-weight: 600 }
+
+/* CPU 단계 실행기 */
+.cpu { display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: 14px; margin-top: 10px }
+.regs { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--bg); font-family: var(--f-mono); font-size: 13px }
+.regs .r { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px dashed var(--line) }
+.regs .r:last-child { border-bottom: 0 }
+.regs .r.chg { color: var(--accent); font-weight: 600 }
+.cpu-msg { margin-top: 10px; font-size: 14px; min-height: 1.6em }
+@media (max-width: 560px) { .cpu { grid-template-columns: minmax(0, 1fr) } }
+
+/* 메모리 칸 위에 주소 표시 */
+.mem { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; margin-top: 8px }
+.mem .byte { min-width: 0 }
+.mem .off { font-size: 10px; color: var(--muted) }
+.mem .byte.new { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) }
+.mem .byte.empty .h { color: var(--muted) }
+.lab select { font-family: var(--f-mono); font-size: 14px; padding: 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--fg) }
+.cmd { position: relative }
+
+/* ---------- 0부에서 추가한 요소 ---------- */
+/* C 코드와 어셈블리 짝짓기 뷰어 */
+.map { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 12px; margin: 8px 0 6px }
+.map .pane { background: var(--code-bg); border-radius: 10px; padding: 8px 0; overflow-x: auto; font-family: var(--f-mono); font-size: 13px; line-height: 1.7; min-width: 0 }
+.map .pane-t { font-family: var(--f-body); font-size: 12px; color: var(--muted); padding: 0 12px 4px }
+.map .l { display: block; padding: 0 12px; white-space: pre; cursor: pointer; border-left: 3px solid transparent }
+.map .l:hover { background: var(--accent-soft) }
+.map .l:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px }
+.map .l.on { background: var(--hl); border-left-color: var(--pad) }
+.map .l.dim { cursor: default }
+.map .l.dim:hover { background: transparent }
+.map .a { display: grid; grid-template-columns: 40px max-content minmax(180px, 1fr); gap: 12px }
+.map .a .ad { color: var(--muted) }
+.map .a .cm { color: var(--muted); font-family: var(--f-body); white-space: normal }
+.map .a.on .cm { color: var(--fg) }
+.map-hint { font-size: 12px; color: var(--muted); margin-bottom: 16px }
+@media (max-width: 760px) { .map { grid-template-columns: minmax(0, 1fr) } }
+.term { background: var(--code-bg); border-radius: 10px; padding: 12px 16px; font-family: var(--f-mono); font-size: 13px; overflow-x: auto; margin: 0 0 8px; white-space: pre }
+.task { border: 1px dashed var(--accent); border-radius: 10px; padding: 12px 16px; margin: 8px 0 16px; font-size: 15px }
+.task b.t { color: var(--accent) }

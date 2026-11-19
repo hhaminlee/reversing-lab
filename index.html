@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>reversing-lab</title>
+<link rel="stylesheet" href="guide/assets/guide.css">
+<style>
+/* 첫 페이지: 교재 세 개로 가는 목록만 보여줌 */
+.home { max-width: 720px; margin: 0 auto; padding-block: 56px 80px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+.home h1 { font-size: 34px; line-height: 1.25; margin: 0 0 12px; text-wrap: balance }
+.home .lead { color: var(--muted); margin: 0 0 32px }
+.parts-list { display: grid; gap: 12px; margin: 0 0 32px }
+.part { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 16px; padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--fg); text-decoration: none }
+.part:hover, .part:focus-visible { border-color: var(--accent) }
+.part .no { font-family: var(--f-mono); font-size: 13px; color: var(--accent); padding-top: 3px }
+.part h2 { font-size: 18px; margin: 0 0 4px }
+.part p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6 }
+.home footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px }
+.home footer a { color: var(--accent) }
+</style>
+</head>
+<body>
+<main class="home">
+  <h1>앱 리버싱 실습 교재</h1>
+  <p class="lead">OWASP의 연습용 앱 UnCrackable을 풀면서 바이트, 암호화, 어셈블리를 기초부터 익히는 한국어 교재입니다. 어셈블리가 처음이라면 0부부터 시작하세요.</p>
+  <div class="parts-list">
+    <a class="part" href="guide/c-to-assembly.html"><span class="no">0부</span><span><h2>내 코드 뜯어보기</h2><p>직접 쓴 C 코드를 컴파일해서 어셈블리와 한 줄씩 짝지어 봅니다. 변수, 함수, if, 반복문, 문자열, 포인터.</p></span></a>
+    <a class="part" href="guide/reversing-basics.html"><span class="no">1부</span><span><h2>리버싱 첫걸음</h2><p>바이트, 16진수, Base64, AES와 패딩, 비트 플래그를 익히고 UnCrackable Level 1을 풉니다.</p></span></a>
+    <a class="part" href="guide/level2-native.html"><span class="no">2부</span><span><h2>리버싱 둘째 걸음</h2><p>네이티브 코드, 레지스터, 리틀 엔디안을 익히고 objdump로 UnCrackable Level 2를 풉니다.</p></span></a>
+  </div>
+  <footer>
+    실습 환경 준비와 출처는 <a href="https://github.com/hhaminlee/reversing-lab" target="_blank" rel="noopener">GitHub 저장소의 README</a>를 보세요.
+    교재는 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ko" target="_blank" rel="noopener">CC BY-SA 4.0</a>으로 공개합니다.
+  </footer>
+</main>
+</body>
+</html>

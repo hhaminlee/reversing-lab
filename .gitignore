@@ -1,0 +1,5 @@
+# 용량이 크거나 다른 곳에서 받는 파일은 올리지 않음
+tools/
+apks/
+work/
+part0/build/
